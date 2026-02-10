@@ -1,13 +1,9 @@
-import os
 import streamlit as st
 from groq import Groq
-from dotenv import load_dotenv
 
-# Load environment variables
-load_dotenv(encoding="utf-16")
-# Initialize Groq client
+# Create Groq client using Streamlit Secrets
 client = Groq(
-    api_key=os.getenv("GROQ_API_KEY")
+    api_key=st.secrets["GROQ_API_KEY"]
 )
 
 st.set_page_config(page_title="Groq Chat", page_icon="💬")
@@ -36,7 +32,7 @@ if user_input:
     with st.chat_message("user"):
         st.markdown(user_input)
 
-    # Call Groq API with full conversation (memory)
+    # Call Groq API with full conversation (memory enabled)
     response = client.chat.completions.create(
         model="llama-3.3-70b-versatile",
         messages=st.session_state.messages,
